@@ -1,8 +1,10 @@
 package com.dept.firstAssigmentDept.controller;
 
+import com.dept.firstAssigmentDept.dto.CatalogItemDTO;
 import com.dept.firstAssigmentDept.model.CatalogItem;
 import com.dept.firstAssigmentDept.service.CatalogItemsService;
 import lombok.extern.slf4j.Slf4j;
+import net.minidev.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,36 +23,38 @@ public class CatalogItemsController {
     }
 
     @GetMapping
-    public List<CatalogItem> allCatalogItems() {
+    public List<CatalogItemDTO> allCatalogItems() {
         log.debug("Getting all catalog items.");
         return catalogItemsService.getAllCatalogItems();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CatalogItem> getCatalogItem(@PathVariable("id") final Long id) {
+    public ResponseEntity<CatalogItemDTO> getCatalogItem(@PathVariable("id") final Long id) {
         log.debug("Getting catalog item with id of " + id + ".");
-        CatalogItem catalogItem = catalogItemsService.getItemById(id);
+        CatalogItemDTO catalogItem = catalogItemsService.getItemById(id);
         return new ResponseEntity<>(catalogItem, HttpStatus.OK);
     }
 
     @PostMapping("/new")
-    public ResponseEntity<CatalogItem> addCatalogItem(@Valid @RequestBody final CatalogItem item) {
+    public ResponseEntity<CatalogItemDTO> addCatalogItem(@Valid @RequestBody final CatalogItemDTO item) {
         log.debug("Adding new item");
-        CatalogItem catalogItem = catalogItemsService.addCatalogItem(item);
+        CatalogItemDTO catalogItem = catalogItemsService.addCatalogItem(item);
         return new ResponseEntity<>(catalogItem, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CatalogItem> updateCatalogItem(@PathVariable("id") final Long id,
-                                                         @Valid @RequestBody final CatalogItem item) {
+    public ResponseEntity<CatalogItemDTO> updateCatalogItem(@PathVariable("id") final Long id,
+                                                         @Valid @RequestBody final CatalogItemDTO item) {
         log.debug("Updating item with id of " + id + ".");
-        CatalogItem catalogItem = catalogItemsService.updateCatalogItem(id, item);
+        CatalogItemDTO catalogItem = catalogItemsService.updateCatalogItem(id, item);
         return new ResponseEntity<>(catalogItem, HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteCatalogItem(@PathVariable("id") final Long id) {
+    public ResponseEntity<JSONObject> deleteCatalogItem(@PathVariable("id") final Long id) {
         log.debug("Deleted catalog item with id of " + id + ".");
         catalogItemsService.deleteCatalogItem(id);
-        return new ResponseEntity<>("Successfully deleted catalog item.", HttpStatus.OK);
+        JSONObject text = new JSONObject();
+        text.appendField("result","Successfully deleted catalog item.");
+        return new ResponseEntity<>(text, HttpStatus.OK);
     }
 }

@@ -15,12 +15,12 @@ public class CatalogItemDTO {
 
     @NotBlank(message = "Name cannot be blank.")
     @NotNull(message = "Name cannot be null.")
-    @Max(value = 100)
+    @Size(min = 3, max = 100)
     private String name;
 
     @NotBlank(message = "Description cannot be blank.")
     @NotNull(message = "Description cannot be null.")
-    @Max(value = 2000)
+    @Size(min = 1, max = 2000)
     private String description;
 
     @DecimalMin(value = "0.0")

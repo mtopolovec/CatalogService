@@ -1,14 +1,14 @@
 package com.dept.firstAssigmentDept.service;
 
-import com.dept.firstAssigmentDept.model.CatalogItem;
+import com.dept.firstAssigmentDept.dto.CatalogItemDTO;
 
 import java.util.List;
 
 public interface CatalogItemsService {
-    List<CatalogItem> getAllCatalogItems();
-    CatalogItem getItemById(Long id);
-    CatalogItem addCatalogItem(CatalogItem item);
-    CatalogItem updateCatalogItem(Long id, CatalogItem item);
+    List<CatalogItemDTO> getAllCatalogItems();
+    CatalogItemDTO getItemById(Long id);
+    CatalogItemDTO addCatalogItem(CatalogItemDTO item);
+    CatalogItemDTO updateCatalogItem(Long id, CatalogItemDTO item);
     void deleteCatalogItem(Long id);
 
 }
