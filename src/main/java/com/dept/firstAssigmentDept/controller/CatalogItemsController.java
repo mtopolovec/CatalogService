@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -33,7 +34,7 @@ public class CatalogItemsController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<CatalogItem> addCatalogItem(@RequestBody final CatalogItem item) {
+    public ResponseEntity<CatalogItem> addCatalogItem(@Valid @RequestBody final CatalogItem item) {
         log.debug("Adding new item");
         CatalogItem catalogItem = catalogItemsService.addCatalogItem(item);
         return new ResponseEntity<>(catalogItem, HttpStatus.OK);
@@ -41,7 +42,7 @@ public class CatalogItemsController {
 
     @PutMapping("/{id}")
     public ResponseEntity<CatalogItem> updateCatalogItem(@PathVariable("id") final Long id,
-                                                         @RequestBody final CatalogItem item) {
+                                                         @Valid @RequestBody final CatalogItem item) {
         log.debug("Updating item with id of " + id + ".");
         CatalogItem catalogItem = catalogItemsService.updateCatalogItem(id, item);
         return new ResponseEntity<>(catalogItem, HttpStatus.OK);
