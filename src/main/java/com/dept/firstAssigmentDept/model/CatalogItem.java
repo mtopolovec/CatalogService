@@ -4,14 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 public class CatalogItem {
@@ -23,6 +22,8 @@ public class CatalogItem {
     private String name;
     private String description;
     private BigDecimal price;
+    @ElementCollection
     private List<String> images = new ArrayList<>();
+    @ElementCollection
     private List<String> categories = new ArrayList<>();
 }

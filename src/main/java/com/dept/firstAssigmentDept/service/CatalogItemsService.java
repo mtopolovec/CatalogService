@@ -3,7 +3,6 @@ package com.dept.firstAssigmentDept.service;
 import com.dept.firstAssigmentDept.model.CatalogItem;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface CatalogItemsService {
     List<CatalogItem> getAllCatalogItems();

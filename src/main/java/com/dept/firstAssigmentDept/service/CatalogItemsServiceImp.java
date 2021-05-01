@@ -1,11 +1,11 @@
 package com.dept.firstAssigmentDept.service;
 
+import com.dept.firstAssigmentDept.exception.NotFoundException;
 import com.dept.firstAssigmentDept.model.CatalogItem;
 import com.dept.firstAssigmentDept.repository.CatalogItemsRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CatalogItemsServiceImp implements CatalogItemsService {
@@ -24,21 +24,21 @@ public class CatalogItemsServiceImp implements CatalogItemsService {
     @Override
     public CatalogItem getItemById(Long id) {
         return catalogItemsRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("There is no item with this Id: " + id + "."));
+                .orElseThrow(() -> new NotFoundException("There is no item with this Id: " + id + "."));
     }
 
     @Override
     public CatalogItem addCatalogItem(CatalogItem item) {
-        return null;
+        return catalogItemsRepository.save(item);
     }
 
     @Override
     public CatalogItem updateCatalogItem(Long id, CatalogItem item) {
-        return null;
+        return catalogItemsRepository.saveAndFlush(item);
     }
 
     @Override
     public void deleteCatalogItem(Long id) {
-
+        catalogItemsRepository.deleteById(id);
     }
 }
