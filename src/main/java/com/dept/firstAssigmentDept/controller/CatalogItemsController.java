@@ -1,7 +1,6 @@
 package com.dept.firstAssigmentDept.controller;
 
 import com.dept.firstAssigmentDept.dto.CatalogItemDTO;
-import com.dept.firstAssigmentDept.model.CatalogItem;
 import com.dept.firstAssigmentDept.service.CatalogItemsService;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
@@ -35,7 +34,7 @@ public class CatalogItemsController {
         return new ResponseEntity<>(catalogItem, HttpStatus.OK);
     }
 
-    @PostMapping("/new")
+    @PostMapping
     public ResponseEntity<CatalogItemDTO> addCatalogItem(@Valid @RequestBody final CatalogItemDTO item) {
         log.debug("Adding new item");
         CatalogItemDTO catalogItem = catalogItemsService.addCatalogItem(item);
