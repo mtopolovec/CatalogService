@@ -62,7 +62,11 @@ public class CatalogItemsServiceImp implements CatalogItemsService {
 
     @Override
     public void deleteCatalogItem(Long id) {
-        catalogItemsRepository.deleteById(id);
+        if(catalogItemsRepository.existsById(id)) {
+            catalogItemsRepository.deleteById(id);
+        } else {
+            throw new NotFoundException("There is no Catalog item with id of " + id + ".");
+        }
     }
 
     @Override
