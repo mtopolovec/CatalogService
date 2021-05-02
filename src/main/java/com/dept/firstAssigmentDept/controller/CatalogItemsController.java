@@ -62,4 +62,10 @@ public class CatalogItemsController {
         List<CatalogItemDTO> searchedItems = catalogItemsService.searchCatalogItemsByName(search);
         return new ResponseEntity<>(searchedItems, HttpStatus.OK);
     }
+    @PostMapping ("/filterByCategory")
+    public ResponseEntity<List<CatalogItemDTO>> filterItemsByCategory(@RequestBody final List<String> categories) {
+        log.debug("Started to filter items by category");
+        List<CatalogItemDTO> filteredItems = catalogItemsService.filterCatalogItemsByCategories(categories);
+        return new ResponseEntity<>(filteredItems, HttpStatus.OK);
+    }
 }

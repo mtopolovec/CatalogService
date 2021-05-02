@@ -37,12 +37,18 @@ public class CatalogItemBootstrap {
         catalogItem.setPrice(new BigDecimal("369.99"));
         catalogItemsRepository.save(catalogItem);
 
+        List<String> categories1 = new ArrayList<>();
+        categories1.add("Power Drills");
+        categories1.add("Power tools");
+        categories1.add("Tools and home improvement");
         CatalogItem boschDrill = new CatalogItem();
         boschDrill.setName("Bosch drill");
+        boschDrill.setCategories(categories1);
         catalogItemsRepository.save(boschDrill);
 
         CatalogItem drillForWood = new CatalogItem();
         drillForWood.setName("Drill for wood");
+        drillForWood.setCategories(categories1);
         catalogItemsRepository.save(drillForWood);
 
         CatalogItem mandrillMonkey = new CatalogItem();

@@ -75,6 +75,21 @@ public class CatalogItemsServiceImp implements CatalogItemsService {
         return catalogItemsFoundByName;
     }
 
+    @Override
+    public List<CatalogItemDTO> filterCatalogItemsByCategories(List<String> categories) {
+        List<CatalogItemDTO> filteredCategoriesFound = new ArrayList<>();
+        for(String category : categories) {
+            List<CatalogItemDTO> categoriesReturnedFromQuery = catalogItemsRepository.findCatalogItemsByCategories(category)
+                                                                .stream()
+                                                                .map(catalogItemToCatalogItemDTO::convert)
+                                                                .collect(Collectors.toList());
+            for (CatalogItemDTO itemFromQuery : categoriesReturnedFromQuery) {
+                filteredCategoriesFound.add(itemFromQuery);
+            }
+        }
+        return filteredCategoriesFound;
+    }
+
     private List<CatalogItemDTO> sortOutProperCatalogItemsByName(List<CatalogItemDTO> items, String keyword) {
         List<CatalogItemDTO> searchedItemsByKeyword = new ArrayList<>();
         for(CatalogItemDTO item : items) {
