@@ -10,5 +10,6 @@ public interface CatalogItemsService {
     CatalogItemDTO addCatalogItem(CatalogItemDTO item);
     CatalogItemDTO updateCatalogItem(Long id, CatalogItemDTO item);
     void deleteCatalogItem(Long id);
+    List<CatalogItemDTO> searchCatalogItemsByName(String search);
 
 }

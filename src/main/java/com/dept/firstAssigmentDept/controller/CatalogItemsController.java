@@ -56,4 +56,10 @@ public class CatalogItemsController {
         text.appendField("result","Successfully deleted catalog item.");
         return new ResponseEntity<>(text, HttpStatus.OK);
     }
+    @GetMapping("/searchByName/{search}")
+    public ResponseEntity<List<CatalogItemDTO>> searchCatalogItemsByName(@PathVariable("search") final String search) {
+        log.debug("Started search with parameter " + search + ".");
+        List<CatalogItemDTO> searchedItems = catalogItemsService.searchCatalogItemsByName(search);
+        return new ResponseEntity<>(searchedItems, HttpStatus.OK);
+    }
 }

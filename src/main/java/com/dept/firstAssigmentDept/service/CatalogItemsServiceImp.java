@@ -8,6 +8,8 @@ import com.dept.firstAssigmentDept.model.CatalogItem;
 import com.dept.firstAssigmentDept.repository.CatalogItemsRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -61,5 +63,26 @@ public class CatalogItemsServiceImp implements CatalogItemsService {
     @Override
     public void deleteCatalogItem(Long id) {
         catalogItemsRepository.deleteById(id);
+    }
+
+    @Override
+    public List<CatalogItemDTO> searchCatalogItemsByName(String search) {
+        List<CatalogItemDTO> catalogItemsFound = catalogItemsRepository.findCatalogItemsByNameContainsIgnoreCase(search)
+                                                    .stream()
+                                                    .map(catalogItemToCatalogItemDTO::convert)
+                                                    .collect(Collectors.toList());
+        List<CatalogItemDTO> catalogItemsFoundByName = sortOutProperCatalogItemsByName(catalogItemsFound, search);
+        return catalogItemsFoundByName;
+    }
+
+    private List<CatalogItemDTO> sortOutProperCatalogItemsByName(List<CatalogItemDTO> items, String keyword) {
+        List<CatalogItemDTO> searchedItemsByKeyword = new ArrayList<>();
+        for(CatalogItemDTO item : items) {
+            Boolean found = Arrays.asList(item.getName().toLowerCase().split(" ")).contains(keyword.toLowerCase());
+            if(found) {
+                searchedItemsByKeyword.add(item);
+            }
+        }
+        return searchedItemsByKeyword;
     }
 }

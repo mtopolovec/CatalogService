@@ -36,5 +36,21 @@ public class CatalogItemBootstrap {
         catalogItem.setImages(images);
         catalogItem.setPrice(new BigDecimal("369.99"));
         catalogItemsRepository.save(catalogItem);
+
+        CatalogItem boschDrill = new CatalogItem();
+        boschDrill.setName("Bosch drill");
+        catalogItemsRepository.save(boschDrill);
+
+        CatalogItem drillForWood = new CatalogItem();
+        drillForWood.setName("Drill for wood");
+        catalogItemsRepository.save(drillForWood);
+
+        CatalogItem mandrillMonkey = new CatalogItem();
+        mandrillMonkey.setName("Mandrill monkey");
+        catalogItemsRepository.save(mandrillMonkey);
+
+        CatalogItem drillingToy = new CatalogItem();
+        drillingToy.setName("Drilling toy");
+        catalogItemsRepository.save(drillingToy);
     }
 }
