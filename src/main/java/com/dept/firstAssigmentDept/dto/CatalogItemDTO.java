@@ -23,12 +23,12 @@ public class CatalogItemDTO {
     @Size(min = 1, max = 2000)
     private String description;
 
-    @DecimalMin(value = "0.0")
+    @DecimalMin(value = "0.01", message = "Price value must be more then 0")
     private BigDecimal price;
 
-    @NotEmpty
+    @NotEmpty(message = "Images array cannot be empty")
     private List<String> images = new ArrayList<>();
 
-    @NotEmpty
+    @NotEmpty(message = "Categories array cannot be empty")
     private List<String> categories = new ArrayList<>();
 }
