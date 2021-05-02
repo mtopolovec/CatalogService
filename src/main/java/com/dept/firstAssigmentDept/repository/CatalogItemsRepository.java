@@ -10,4 +10,5 @@ import java.util.List;
 public interface CatalogItemsRepository extends JpaRepository<CatalogItem, Long> {
     List<CatalogItem> findCatalogItemsByNameContainsIgnoreCase(String name);
     List<CatalogItem> findCatalogItemsByCategories(String category);
+    List<CatalogItem> findCatalogItemsByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCase(String name, String description);
 }

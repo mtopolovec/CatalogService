@@ -90,6 +90,15 @@ public class CatalogItemsServiceImp implements CatalogItemsService {
         return filteredCategoriesFound;
     }
 
+    @Override
+    public List<CatalogItemDTO> searchCatalogItemsByNameAndDescription(String search) {
+        List<CatalogItemDTO> catalogItemsFound = catalogItemsRepository.findCatalogItemsByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCase(search, search)
+                .stream()
+                .map(catalogItemToCatalogItemDTO::convert)
+                .collect(Collectors.toList());
+        return catalogItemsFound;
+    }
+
     private List<CatalogItemDTO> sortOutProperCatalogItemsByName(List<CatalogItemDTO> items, String keyword) {
         List<CatalogItemDTO> searchedItemsByKeyword = new ArrayList<>();
         for(CatalogItemDTO item : items) {

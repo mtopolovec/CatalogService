@@ -37,26 +37,71 @@ public class CatalogItemBootstrap {
         catalogItem.setPrice(new BigDecimal("369.99"));
         catalogItemsRepository.save(catalogItem);
 
-        List<String> categories1 = new ArrayList<>();
-        categories1.add("Power Drills");
-        categories1.add("Power tools");
-        categories1.add("Tools and home improvement");
+        categories.clear();
+        categories.add("Power Drills");
+        categories.add("Power tools");
+        categories.add("Tools and home improvement");
+
+        images.clear();
+        images.add("https://images-na.ssl-images-amazon.com/images/I/61eTJIc-wdL._AC_SL1000_.jpg");
+        images.add("https://images-na.ssl-images-amazon.com/images/I/71ZTG1h-ZEL._AC_SL1500_.jpg");
+        images.add("https://images-na.ssl-images-amazon.com/images/I/81NisyhA8fL._AC_SL1500_.jpg");
+        images.add("https://images-na.ssl-images-amazon.com/images/I/81nxHq-UW4L._AC_SL1500_.jpg");
+        images.add("https://images-na.ssl-images-amazon.com/images/I/61iBrbxkC7L._AC_SL1000_.jpg");
+        images.add("https://images-na.ssl-images-amazon.com/images/I/71QO3yMVYtL._AC_SL1000_.jpg");
+
         CatalogItem boschDrill = new CatalogItem();
         boschDrill.setName("Bosch drill");
-        boschDrill.setCategories(categories1);
+        boschDrill.setDescription("All brand new drill with witch you can put your best pictures on the wall with ease.");
+        boschDrill.setPrice(new BigDecimal("149.99"));
+        boschDrill.setCategories(categories);
+        boschDrill.setImages(images);
         catalogItemsRepository.save(boschDrill);
+
+        categories.clear();
+        categories.add("Tools for drill");
+        categories.add("Tools and home improvement");
+
+        images.clear();
+        images.add("https://images-na.ssl-images-amazon.com/images/I/71AXZu96WJL._AC_SL1000_.jpg");
 
         CatalogItem drillForWood = new CatalogItem();
         drillForWood.setName("Drill for wood");
-        drillForWood.setCategories(categories1);
+        drillForWood.setDescription("Drill that has Classic Carbon Steel Material. High hardness, offer superior cutting power and durable.");
+        drillForWood.setPrice(new BigDecimal("39.55"));
+        drillForWood.setCategories(categories);
+        drillForWood.setImages(images);
         catalogItemsRepository.save(drillForWood);
+
+        categories.clear();
+        categories.add("Puppets");
+        categories.add("Toys and games");
+
+        images.clear();
+        images.add("https://images-na.ssl-images-amazon.com/images/I/61ooewVtgzL._AC_SL1000_.jpg");
+        images.add("https://images-na.ssl-images-amazon.com/images/I/61ur1mrOlbL._AC_SL1000_.jpg");
+        images.add("https://images-na.ssl-images-amazon.com/images/I/61u1cJA05AL._AC_SL1000_.jpg");
+        images.add("https://images-na.ssl-images-amazon.com/images/I/61YpBGCjpxL._AC_SL1000_.jpg");
 
         CatalogItem mandrillMonkey = new CatalogItem();
         mandrillMonkey.setName("Mandrill monkey");
+        mandrillMonkey.setDescription("This hand-painted Mandrill figure features a mainly brown coat of fur, with accents of dark brown, light brown, white, and yellow ochre.");
+        mandrillMonkey.setPrice(new BigDecimal("10.10"));
+        mandrillMonkey.setCategories(categories);
+        mandrillMonkey.setImages(images);
         catalogItemsRepository.save(mandrillMonkey);
+
+        categories.clear();
+        categories.add("Drill toys");
+        categories.add("Toys and games");
+
+        images.clear();
+        images.add("https://images-na.ssl-images-amazon.com/images/I/61ZvXAbdyFL._AC_SL1500_.jpg");
 
         CatalogItem drillingToy = new CatalogItem();
         drillingToy.setName("Drilling toy");
+        drillingToy.setDescription("Realistic drilling action & sounds!");
+        drillingToy.setPrice(new BigDecimal("18.20"));
         catalogItemsRepository.save(drillingToy);
     }
 }

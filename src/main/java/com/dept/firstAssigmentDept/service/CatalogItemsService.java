@@ -12,4 +12,5 @@ public interface CatalogItemsService {
     void deleteCatalogItem(Long id);
     List<CatalogItemDTO> searchCatalogItemsByName(String search);
     List<CatalogItemDTO> filterCatalogItemsByCategories(List<String> categories);
+    List<CatalogItemDTO> searchCatalogItemsByNameAndDescription(String search);
 }

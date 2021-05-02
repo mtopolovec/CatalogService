@@ -58,7 +58,7 @@ public class CatalogItemsController {
     }
     @GetMapping("/searchByName/{search}")
     public ResponseEntity<List<CatalogItemDTO>> searchCatalogItemsByName(@PathVariable("search") final String search) {
-        log.debug("Started search with parameter " + search + ".");
+        log.debug("Started search for Name with parameter " + search + ".");
         List<CatalogItemDTO> searchedItems = catalogItemsService.searchCatalogItemsByName(search);
         return new ResponseEntity<>(searchedItems, HttpStatus.OK);
     }
@@ -67,5 +67,11 @@ public class CatalogItemsController {
         log.debug("Started to filter items by category");
         List<CatalogItemDTO> filteredItems = catalogItemsService.filterCatalogItemsByCategories(categories);
         return new ResponseEntity<>(filteredItems, HttpStatus.OK);
+    }
+    @GetMapping("/searchByNameAndDescription/{search}")
+    public ResponseEntity<List<CatalogItemDTO>> fullTextSearchByNameAndDescription(@PathVariable("search") final String search) {
+        log.debug("Started full text search for Name and Description with parameter " + search + ".");
+        List<CatalogItemDTO> searchedItems = catalogItemsService.searchCatalogItemsByNameAndDescription(search);
+        return new ResponseEntity<>(searchedItems, HttpStatus.OK);
     }
 }
