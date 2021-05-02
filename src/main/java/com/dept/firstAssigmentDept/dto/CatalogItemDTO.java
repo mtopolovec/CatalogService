@@ -26,6 +26,9 @@ public class CatalogItemDTO {
     @DecimalMin(value = "0.0")
     private BigDecimal price;
 
+    @NotEmpty
     private List<String> images = new ArrayList<>();
+
+    @NotEmpty
     private List<String> categories = new ArrayList<>();
 }
