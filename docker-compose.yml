@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+
+  first-assigment-app:
+    image: first-assigment-app
+    container_name: first-assigment-app
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on:
+      - mysql-standalone
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-standalone:3306/test
+      SPRING_DATASOURCE_USERNAME: "testuser"
+      SPRING_DATASOURCE_PASSWORD: "testuser"
+    networks:
+      - backend
+
+  mysql-standalone:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    restart: always
+    container_name: mysql-standalone
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_USER: testuser
+      MYSQL_PASSWORD: testuser
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - backend
+
+volumes:
+  db-data:
+
+networks:
+  backend:
