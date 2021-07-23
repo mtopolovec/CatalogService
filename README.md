@@ -7,4 +7,5 @@ You can use docker to test the app with using docker-compose file.
 But after you use docker to make both app and mysql database.
 You will need to uncomment the mysql required parameters in application.yml file.
 Import init.sql in order for app to work via terminal on docker mysql image using next command:
+
 `mysql -u root -p test < init.sql`
