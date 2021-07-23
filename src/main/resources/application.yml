@@ -1,9 +1,9 @@
-spring:
-  datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://mysql-standalone:3306/test
-    username: testuser
-    password: testuser
-  jpa:
-    hibernate:
-      ddl-auto: update
+#spring:
+#  datasource:
+#    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://mysql-standalone:3306/test
+#    username: testuser
+#    password: testuser
+#  jpa:
+#    hibernate:
+#      ddl-auto: update

@@ -1,6 +1,9 @@
 package com.dept.firstAssigmentDept.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import net.minidev.json.annotate.JsonIgnore;
 
 import javax.validation.constraints.*;
@@ -9,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CatalogItemDTO {
     @JsonIgnore
     private Long id;
