@@ -17,12 +17,15 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(CatalogItemsController.class)
 class CatalogItemsControllerTest {
@@ -45,7 +48,7 @@ class CatalogItemsControllerTest {
     List<String> images = new ArrayList<>();
     List<String> categories = new ArrayList<>();
 
-    @Before(value = "new")
+    @Before(value = "CatalogItemsControllerTestSetup")
     void setUp() {
 
         images.add("Image1");
@@ -181,7 +184,7 @@ class CatalogItemsControllerTest {
     }
 
     @Test
-    void filterItemsByCategory_success() throws Exception {
+    void filterItemsByCategory_ShouldFilterItemCorrectly() throws Exception {
 
         List<String> testCategories = new ArrayList<>();
         testCategories.add("Power Drills");
@@ -191,11 +194,6 @@ class CatalogItemsControllerTest {
         CatalogItemDTO searchCategory = createCatalogItem();
         searchCategory.setName("Bosch drill");
         searchCategory.setCategories(testCategories);
-
-        catalogItemsService.addCatalogItem(catalogItemToCatalogItemDTO.convert(catalogItem1));
-        catalogItemsService.addCatalogItem(catalogItemToCatalogItemDTO.convert(catalogItem2));
-        catalogItemsService.addCatalogItem(catalogItemToCatalogItemDTO.convert(catalogItem3));
-        catalogItemsService.addCatalogItem(searchCategory);
 
         when(catalogItemsService.filterCatalogItemsByCategories(new ArrayList<>(Arrays.asList("Power tools"))))
                 .thenReturn(new ArrayList<>(Arrays.asList(searchCategory)));
@@ -218,11 +216,6 @@ class CatalogItemsControllerTest {
         CatalogItemDTO searchByNameAndDescription = createCatalogItem();
         searchByNameAndDescription.setName("Bosch drill");
         searchByNameAndDescription.setDescription("All brand new drill with witch you can put your best pictures on the wall with ease.");
-
-        catalogItemsService.addCatalogItem(catalogItemToCatalogItemDTO.convert(catalogItem1));
-        catalogItemsService.addCatalogItem(catalogItemToCatalogItemDTO.convert(catalogItem2));
-        catalogItemsService.addCatalogItem(catalogItemToCatalogItemDTO.convert(catalogItem3));
-        catalogItemsService.addCatalogItem(searchByNameAndDescription);
 
         when(catalogItemsService.searchCatalogItemsByNameAndDescription("drill"))
                 .thenReturn(new ArrayList<>(Arrays.asList(searchByNameAndDescription)));
