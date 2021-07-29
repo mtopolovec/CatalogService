@@ -65,9 +65,9 @@ class CatalogItemsControllerTest {
 
     @Test
     void allCatalogItems_success() throws Exception {
-        List<CatalogItemDTO> catalogItems = new ArrayList<>(Arrays.asList(catalogItemToCatalogItemDTO.convert(catalogItem1),
+        List<CatalogItemDTO> catalogItems = Arrays.asList(catalogItemToCatalogItemDTO.convert(catalogItem1),
                 catalogItemToCatalogItemDTO.convert(catalogItem2),
-                catalogItemToCatalogItemDTO.convert(catalogItem3)));
+                catalogItemToCatalogItemDTO.convert(catalogItem3));
 
         when(catalogItemsService.getAllCatalogItems()).thenReturn(catalogItems);
 
@@ -173,7 +173,7 @@ class CatalogItemsControllerTest {
         catalogItemsService.addCatalogItem(searchItem);
 
         when(catalogItemsService.searchCatalogItemsByName("drill"))
-                .thenReturn(new ArrayList<>(Arrays.asList(searchItem)));
+                .thenReturn(Arrays.asList(searchItem));
 
         mockMvc.perform(MockMvcRequestBuilders
         .get("/api/catalogItems/searchByName/drill")
@@ -195,8 +195,8 @@ class CatalogItemsControllerTest {
         searchCategory.setName("Bosch drill");
         searchCategory.setCategories(testCategories);
 
-        when(catalogItemsService.filterCatalogItemsByCategories(new ArrayList<>(Arrays.asList("Power tools"))))
-                .thenReturn(new ArrayList<>(Arrays.asList(searchCategory)));
+        when(catalogItemsService.filterCatalogItemsByCategories(Arrays.asList("Power tools")))
+                .thenReturn(Arrays.asList(searchCategory));
 
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
                 .post("/api/catalogItems/filterByCategory")
@@ -213,12 +213,15 @@ class CatalogItemsControllerTest {
     @Test
     void fullTextSearchByNameAndDescription() throws Exception {
 
-        CatalogItemDTO searchByNameAndDescription = createCatalogItem();
-        searchByNameAndDescription.setName("Bosch drill");
-        searchByNameAndDescription.setDescription("All brand new drill with witch you can put your best pictures on the wall with ease.");
+        String search = "drill";
+        String description = "All brand new drill with witch you can put your best pictures on the wall with ease.";
+        String name = "Bosch drill";
 
-        when(catalogItemsService.searchCatalogItemsByNameAndDescription("drill"))
-                .thenReturn(new ArrayList<>(Arrays.asList(searchByNameAndDescription)));
+        CatalogItemDTO searchByNameAndDescription = createCatalogItem();
+        searchByNameAndDescription.setName(name);
+        searchByNameAndDescription.setDescription(description);
+        when(catalogItemsService.searchCatalogItemsByNameAndDescription(search))
+                .thenReturn(Arrays.asList(searchByNameAndDescription));
 
         mockMvc.perform(MockMvcRequestBuilders
             .get("/api/catalogItems/searchByNameAndDescription/drill")
@@ -226,7 +229,7 @@ class CatalogItemsControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", notNullValue()))
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].name", is("Bosch drill")));
+                .andExpect(jsonPath("$[0].name", is(name)));
     }
 
     private CatalogItemDTO createCatalogItem() {

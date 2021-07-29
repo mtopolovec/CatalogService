@@ -21,7 +21,6 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -44,7 +43,7 @@ class CatalogItemsServiceImpTest {
         CatalogItem catalogItem2 = createCatalogItem(2L,"TestItem2","The super TestItem2", new BigDecimal(19.99));
         CatalogItem catalogItem3 = createCatalogItem(3L,"TestItem3","The super TestItem3", new BigDecimal(1999.99));
 
-        List<CatalogItem> catalogItems = new ArrayList<>(Arrays.asList(catalogItem1, catalogItem2, catalogItem3));
+        List<CatalogItem> catalogItems = Arrays.asList(catalogItem1, catalogItem2, catalogItem3);
 
         when(catalogItemsRepository.findAll()).thenReturn(catalogItems);
 
@@ -76,8 +75,6 @@ class CatalogItemsServiceImpTest {
         final Long number = 1L;
         when(catalogItemsRepository.findById(number)).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> catalogItemsService.getItemById(number),
-                "There is no item with this Id: " + number + ".");
         assertThatThrownBy(() -> catalogItemsService.getItemById(number))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("There is no item with this Id: " + number + ".");
@@ -90,11 +87,9 @@ class CatalogItemsServiceImpTest {
         CatalogItemDTO catalogItemDTO = new CatalogItemDTO(1L,"TestItem","The new super TestItem", new BigDecimal(99.99),testCatalogItem.getImages(),testCatalogItem.getCategories());
 
         when(catalogItemToCatalogItemDTO.convert(testCatalogItem)).thenReturn(catalogItemDTO);
-        CatalogItemDTO response = catalogItemToCatalogItemDTO.convert(testCatalogItem);
-
         when(catalogItemDTOToCatalogItem.convert(catalogItemDTO)).thenReturn(testCatalogItem);
         when(catalogItemsRepository.save(testCatalogItem)).thenReturn(testCatalogItem);
-        when(catalogItemsService.addCatalogItem(catalogItemDTO)).thenReturn(response);
+        when(catalogItemsService.addCatalogItem(catalogItemDTO)).thenReturn(catalogItemDTO);
 
         CatalogItemDTO actualCatalogItem = catalogItemsService.addCatalogItem(catalogItemToCatalogItemDTO.convert(testCatalogItem));
 
@@ -126,8 +121,8 @@ class CatalogItemsServiceImpTest {
 
         final Long number = 1L;
 
-        CatalogItem newCatalogItem = createCatalogItem(1L,"TestItem","The new super TestItem", new BigDecimal(99.99));
-        CatalogItemDTO newCatalogItemDTO = new CatalogItemDTO(1L,"TestItem","The new super TestItem", new BigDecimal(99.99),newCatalogItem.getImages(),newCatalogItem.getCategories());
+        CatalogItem newCatalogItem = createCatalogItem(number,"TestItem","The new super TestItem", new BigDecimal(99.99));
+        CatalogItemDTO newCatalogItemDTO = new CatalogItemDTO(number,"TestItem","The new super TestItem", new BigDecimal(99.99),newCatalogItem.getImages(),newCatalogItem.getCategories());
 
         when(catalogItemsRepository.existsById(number)).thenReturn(false);
 
@@ -164,20 +159,20 @@ class CatalogItemsServiceImpTest {
 
         String search = "drill";
 
-        CatalogItem catalogItem = createCatalogItem(1L,"Test Item drill","The new super TestItem", new BigDecimal(99.99));
-        CatalogItem catalogItem1 = createCatalogItem(2L,"TestItem","The new super TestItem", new BigDecimal(99.99));
-        CatalogItemDTO catalogItemDTO = new CatalogItemDTO(1L,"Test Item drill","The new super TestItem", new BigDecimal(99.99),catalogItem.getImages(),catalogItem.getCategories());
-        CatalogItemDTO catalogItem1DTO = new CatalogItemDTO(2L,"TestItem","The new super TestItem", new BigDecimal(99.99),catalogItem1.getImages(),catalogItem1.getCategories());
+        CatalogItem matchItem = createCatalogItem(1L,"Test Item drill","The new super TestItem", new BigDecimal(99.99));
+        CatalogItem missItem = createCatalogItem(2L,"TestItem","The new super TestItem", new BigDecimal(99.99));
+        CatalogItemDTO matchItemDTO = new CatalogItemDTO(1L,"Test Item drill","The new super TestItem", new BigDecimal(99.99),matchItem.getImages(),matchItem.getCategories());
+        CatalogItemDTO missItemDTO = new CatalogItemDTO(2L,"TestItem","The new super TestItem", new BigDecimal(99.99),missItem.getImages(),missItem.getCategories());
 
-        when(catalogItemToCatalogItemDTO.convert(catalogItem)).thenReturn(catalogItemDTO);
-        when(catalogItemToCatalogItemDTO.convert(catalogItem1)).thenReturn(catalogItem1DTO);
-        when(catalogItemsRepository.findCatalogItemsByNameContainsIgnoreCase(search)).thenReturn(new ArrayList<>(Arrays.asList(catalogItem, catalogItem1)));
+        when(catalogItemToCatalogItemDTO.convert(matchItem)).thenReturn(matchItemDTO);
+        when(catalogItemToCatalogItemDTO.convert(missItem)).thenReturn(missItemDTO);
+        when(catalogItemsRepository.findCatalogItemsByNameContainsIgnoreCase(search)).thenReturn(Arrays.asList(matchItem, missItem));
 
         List<CatalogItemDTO> searchItems = catalogItemsService.searchCatalogItemsByName(search);
 
         assertThat(searchItems, is(notNullValue()));
         assertThat(searchItems.size(), is(equalTo(1)));
-        assertThat(searchItems.get(0).getName(), is(equalTo(catalogItemDTO.getName())));
+        assertThat(searchItems.get(0).getName(), is(equalTo(matchItemDTO.getName())));
 
     }
 
@@ -185,13 +180,13 @@ class CatalogItemsServiceImpTest {
     void filterCatalogItemsByCategories_shouldReturnItemsWithCategoriesSearched() {
 
         String filterCategory = "testCategory1";
-        List<String> filterCategories = new ArrayList<>(Arrays.asList(filterCategory));
+        List<String> filterCategories = Arrays.asList(filterCategory);
 
         CatalogItem catalogItem = createCatalogItem(1L,"Test Item drill","The new super TestItem", new BigDecimal(99.99));
         CatalogItemDTO catalogItemDTO = new CatalogItemDTO(1L,"Test Item drill","The new super TestItem", new BigDecimal(99.99),catalogItem.getImages(),catalogItem.getCategories());
 
         when(catalogItemToCatalogItemDTO.convert(catalogItem)).thenReturn(catalogItemDTO);
-        when(catalogItemsRepository.findCatalogItemsByCategories(filterCategory)).thenReturn(new ArrayList<>(Arrays.asList(catalogItem)));
+        when(catalogItemsRepository.findCatalogItemsByCategories(filterCategory)).thenReturn(Arrays.asList(catalogItem));
 
         List<CatalogItemDTO> filterItemsByCategory = catalogItemsService.filterCatalogItemsByCategories(filterCategories);
 
@@ -210,7 +205,7 @@ class CatalogItemsServiceImpTest {
         CatalogItemDTO catalogItemDTO = new CatalogItemDTO(1L,"Test Item drill","The new super TestItem with a drill", new BigDecimal(99.99),catalogItem.getImages(),catalogItem.getCategories());
 
         when(catalogItemToCatalogItemDTO.convert(catalogItem)).thenReturn(catalogItemDTO);
-        when(catalogItemsRepository.findCatalogItemsByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCase(search, search)).thenReturn(new ArrayList<>(Arrays.asList(catalogItem)));
+        when(catalogItemsRepository.findCatalogItemsByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCase(search, search)).thenReturn(Arrays.asList(catalogItem));
 
         List<CatalogItemDTO> searchItems = catalogItemsService.searchCatalogItemsByNameAndDescription(search);
 
