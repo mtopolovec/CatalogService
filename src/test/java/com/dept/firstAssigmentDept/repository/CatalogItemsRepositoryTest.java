@@ -99,6 +99,9 @@ class CatalogItemsRepositoryTest {
 
         assertThat(foundCatalogItem, is(notNullValue()));
         assertThat(foundCatalogItem.size(), is(equalTo(3)));
+
+        assertThat(foundCatalogItem, containsInAnyOrder(matchItem, matchItem1, matchItem2));
+
         assertThat(foundCatalogItem.get(0).getName(), is(equalTo(matchItemName)));
         assertThat(foundCatalogItem.get(0).getDescription(), is(equalTo(matchItemDescription)));
         assertThat(foundCatalogItem.get(1).getName(), is(equalTo(matchItemName1)));
