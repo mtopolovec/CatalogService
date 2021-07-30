@@ -24,7 +24,7 @@ services:
     image: mysql:5.7
     ports:
       - "3306:3306"
-    #command: --init-file init.sql
+    #command: --init-file V1__initOfDatabase.sql
     restart: always
     container_name: mysql-standalone
     environment:
@@ -34,7 +34,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - db-data:/var/lib/mysql
-      - $HOME/Development/CatalogService/init.sql:/init.sql
+      - $HOME/Development/CatalogService/V1__initOfDatabase.sql:/V1__initOfDatabase.sql
     networks:
       - backend
 
