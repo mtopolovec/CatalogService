@@ -17,12 +17,15 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(CatalogItemsController.class)
 class CatalogItemsControllerTest {
@@ -45,7 +48,7 @@ class CatalogItemsControllerTest {
     List<String> images = new ArrayList<>();
     List<String> categories = new ArrayList<>();
 
-    @Before(value = "new")
+    @Before(value = "CatalogItemsControllerTestSetup")
     void setUp() {
 
         images.add("Image1");
@@ -62,9 +65,9 @@ class CatalogItemsControllerTest {
 
     @Test
     void allCatalogItems_success() throws Exception {
-        List<CatalogItemDTO> catalogItems = new ArrayList<>(Arrays.asList(catalogItemToCatalogItemDTO.convert(catalogItem1),
+        List<CatalogItemDTO> catalogItems = Arrays.asList(catalogItemToCatalogItemDTO.convert(catalogItem1),
                 catalogItemToCatalogItemDTO.convert(catalogItem2),
-                catalogItemToCatalogItemDTO.convert(catalogItem3)));
+                catalogItemToCatalogItemDTO.convert(catalogItem3));
 
         when(catalogItemsService.getAllCatalogItems()).thenReturn(catalogItems);
 
@@ -170,7 +173,7 @@ class CatalogItemsControllerTest {
         catalogItemsService.addCatalogItem(searchItem);
 
         when(catalogItemsService.searchCatalogItemsByName("drill"))
-                .thenReturn(new ArrayList<>(Arrays.asList(searchItem)));
+                .thenReturn(Arrays.asList(searchItem));
 
         mockMvc.perform(MockMvcRequestBuilders
         .get("/api/catalogItems/searchByName/drill")
@@ -181,7 +184,7 @@ class CatalogItemsControllerTest {
     }
 
     @Test
-    void filterItemsByCategory_success() throws Exception {
+    void filterItemsByCategory_ShouldFilterItemCorrectly() throws Exception {
 
         List<String> testCategories = new ArrayList<>();
         testCategories.add("Power Drills");
@@ -192,13 +195,8 @@ class CatalogItemsControllerTest {
         searchCategory.setName("Bosch drill");
         searchCategory.setCategories(testCategories);
 
-        catalogItemsService.addCatalogItem(catalogItemToCatalogItemDTO.convert(catalogItem1));
-        catalogItemsService.addCatalogItem(catalogItemToCatalogItemDTO.convert(catalogItem2));
-        catalogItemsService.addCatalogItem(catalogItemToCatalogItemDTO.convert(catalogItem3));
-        catalogItemsService.addCatalogItem(searchCategory);
-
-        when(catalogItemsService.filterCatalogItemsByCategories(new ArrayList<>(Arrays.asList("Power tools"))))
-                .thenReturn(new ArrayList<>(Arrays.asList(searchCategory)));
+        when(catalogItemsService.filterCatalogItemsByCategories(Arrays.asList("Power tools")))
+                .thenReturn(Arrays.asList(searchCategory));
 
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
                 .post("/api/catalogItems/filterByCategory")
@@ -215,17 +213,15 @@ class CatalogItemsControllerTest {
     @Test
     void fullTextSearchByNameAndDescription() throws Exception {
 
+        String search = "drill";
+        String description = "All brand new drill with witch you can put your best pictures on the wall with ease.";
+        String name = "Bosch drill";
+
         CatalogItemDTO searchByNameAndDescription = createCatalogItem();
-        searchByNameAndDescription.setName("Bosch drill");
-        searchByNameAndDescription.setDescription("All brand new drill with witch you can put your best pictures on the wall with ease.");
-
-        catalogItemsService.addCatalogItem(catalogItemToCatalogItemDTO.convert(catalogItem1));
-        catalogItemsService.addCatalogItem(catalogItemToCatalogItemDTO.convert(catalogItem2));
-        catalogItemsService.addCatalogItem(catalogItemToCatalogItemDTO.convert(catalogItem3));
-        catalogItemsService.addCatalogItem(searchByNameAndDescription);
-
-        when(catalogItemsService.searchCatalogItemsByNameAndDescription("drill"))
-                .thenReturn(new ArrayList<>(Arrays.asList(searchByNameAndDescription)));
+        searchByNameAndDescription.setName(name);
+        searchByNameAndDescription.setDescription(description);
+        when(catalogItemsService.searchCatalogItemsByNameAndDescription(search))
+                .thenReturn(Arrays.asList(searchByNameAndDescription));
 
         mockMvc.perform(MockMvcRequestBuilders
             .get("/api/catalogItems/searchByNameAndDescription/drill")
@@ -233,7 +229,7 @@ class CatalogItemsControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", notNullValue()))
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].name", is("Bosch drill")));
+                .andExpect(jsonPath("$[0].name", is(name)));
     }
 
     private CatalogItemDTO createCatalogItem() {
